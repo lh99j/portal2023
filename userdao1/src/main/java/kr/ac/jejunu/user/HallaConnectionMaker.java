@@ -13,6 +13,6 @@ public class HallaConnectionMaker implements ConnectionMaker {
 
         // Connection 맺고
         return DriverManager.getConnection
-                ("jdbc:mysql://localhost:3306/jeju", "root", "Flrnl3570@");
+                ("jdbc:mysql://localhost/Halla", "root", "Flrnl3570@");
     }
 }

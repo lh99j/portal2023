@@ -1,20 +1,39 @@
 package kr.ac.jejunu.user;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.SQLException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.core.Is.is;
 
 public class UserDaoTests {
+    //static을 쓰는 이유는 이 인스턴스를 new로 생성하는게 아니라 재사용하기 위해서 static키워드 사용
+    private static UserDao userDao;
+    @BeforeAll //테스트 케이스를 수행하기전에 실행되는 코드
+    public static void setup(){
+        //Spring
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(DaoFactory.class);
+        userDao = applicationContext.getBean("userDao", UserDao.class); //Dependency LookUp(new 키워드 X)
+    }
 
     @Test
     public void get() throws SQLException, ClassNotFoundException {
         // UserDao코드에서 getConnection을 사용하는 녀석 -> 즉 얘에게 의존성을 던짐
-        ConnectionMaker connectionMaker = new JeJuConnectionMaker();
-        UserDao userDao = new UserDao(connectionMaker);
+//        ConnectionMaker connectionMaker = new JeJuConnectionMaker();
+//        UserDao userDao = new UserDao(connectionMaker);
+//        DaoFactory daoFactory = new DaoFactory();
+//        UserDao userDao = daoFactory.userDao();
+
+        //Spring
+//        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(DaoFactory.class);
+//        UserDao userDao = applicationContext.getBean("userDao", UserDao.class); //Dependency LookUp(new 키워드 X)
+
         Long id = 1L;
         String name = "lhj";
         String password = "1234";
@@ -30,11 +49,15 @@ public class UserDaoTests {
         User user = new User();
         String name = "lh99j";
         String password = "1111";
-
         user.setName(name);
         user.setPassword(password);
-        ConnectionMaker connectionMaker = new JeJuConnectionMaker();
-        UserDao userDao = new UserDao(connectionMaker);
+//        ConnectionMaker connectionMaker = new JeJuConnectionMaker();
+//        UserDao userDao = new UserDao(connectionMaker);
+
+        // UserDao가 던진 의존성을 테스트가 받았지만 테스트도 의존성을 DaoFactory에게 던짐.
+//        DaoFactory daoFactory = new DaoFactory();
+//        UserDao userDao = daoFactory.userDao();
+
         userDao.insert(user);
         assertThat(user.getId(), greaterThan(1L));
 
@@ -44,36 +67,36 @@ public class UserDaoTests {
         assertThat(insertedUser.getPassword(), is(password));
     }
 
-    @Test
-    public void getForHalla() throws SQLException, ClassNotFoundException {
-        ConnectionMaker connectionMaker = new HallaConnectionMaker();
-        UserDao userDao = new UserDao(connectionMaker);
-        Long id = 1L;
-        String name = "lhj";
-        String password = "1111";
-
-        User user = userDao.findById(id);
-        assertThat(user.getId(), is(id));
-        assertThat(user.getName(), is(name));
-        assertThat(user.getPassword(), is(password));
-    }
-
-    @Test
-    public void insertForHalla() throws SQLException, ClassNotFoundException {
-        User user = new User();
-        String name = "lh99j";
-        String password = "1111";
-
-        user.setName(name);
-        user.setPassword(password);
-        ConnectionMaker connectionMaker = new HallaConnectionMaker();
-        UserDao userDao = new UserDao(connectionMaker);
-        userDao.insert(user);
-        assertThat(user.getId(), greaterThan(1L));
-
-        User insertedUser = userDao.findById(user.getId());
-        assertThat(insertedUser.getId(), is(user.getId()));
-        assertThat(insertedUser.getName(), is(name));
-        assertThat(insertedUser.getPassword(), is(password));
-    }
+//    @Test
+//    public void getForHalla() throws SQLException, ClassNotFoundException {
+//        ConnectionMaker connectionMaker = new HallaConnectionMaker();
+//        UserDao userDao = new UserDao(connectionMaker);
+//        Long id = 1L;
+//        String name = "lhj";
+//        String password = "1111";
+//
+//        User user = userDao.findById(id);
+//        assertThat(user.getId(), is(id));
+//        assertThat(user.getName(), is(name));
+//        assertThat(user.getPassword(), is(password));
+//    }
+//
+//    @Test
+//    public void insertForHalla() throws SQLException, ClassNotFoundException {
+//        User user = new User();
+//        String name = "lh99j";
+//        String password = "1111";
+//
+//        user.setName(name);
+//        user.setPassword(password);
+//        ConnectionMaker connectionMaker = new HallaConnectionMaker();
+//        UserDao userDao = new UserDao(connectionMaker);
+//        userDao.insert(user);
+//        assertThat(user.getId(), greaterThan(1L));
+//
+//        User insertedUser = userDao.findById(user.getId());
+//        assertThat(insertedUser.getId(), is(user.getId()));
+//        assertThat(insertedUser.getName(), is(name));
+//        assertThat(insertedUser.getPassword(), is(password));
+//    }
 }
