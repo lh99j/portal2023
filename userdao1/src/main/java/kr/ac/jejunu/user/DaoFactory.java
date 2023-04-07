@@ -36,12 +36,19 @@ public class DaoFactory {
     @Value("${db.url}")
     String url;
 
-    // 스프링이 new 해주는 녀석을 Bean이라고 함
+    // 스프링이 new 해주는 녀석을 * Bean * 이라고 함
     @Bean
     public UserDao userDao() throws ClassNotFoundException {
-        UserDao userDao = new UserDao(dataSource());
+        UserDao userDao = new UserDao(jdbcContext());
         return userDao;
     }
+
+    @Bean
+    public JdbcContext jdbcContext() throws ClassNotFoundException {
+        JdbcContext jdbcContext = new JdbcContext(dataSource());
+        return jdbcContext;
+    }
+
 
     @Bean
     public DataSource dataSource() throws ClassNotFoundException {

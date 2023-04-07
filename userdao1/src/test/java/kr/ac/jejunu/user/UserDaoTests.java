@@ -1,5 +1,6 @@
 package kr.ac.jejunu.user;
 
+import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
@@ -67,6 +68,48 @@ public class UserDaoTests {
         assertThat(insertedUser.getPassword(), is(password));
     }
 
+    @Test
+    public void update() throws SQLException, ClassNotFoundException {
+        User user = new User();
+        String name = "lh99j";
+        String password = "1111";
+
+        user.setName(name);
+        user.setPassword(password);
+        userDao.insert(user);
+
+        String updatedName = "updatedLhj";
+        String updatedPassword = "2222";
+
+        user.setName(updatedName);
+        user.setPassword(updatedPassword);
+        userDao.update(user);
+
+        User updatedUser = userDao.findById(user.getId());
+
+        assertThat(updatedUser.getName(), is(updatedName));
+        assertThat(updatedUser.getPassword(), is(updatedPassword));
+
+    }
+
+    @Test
+    public void delete() throws SQLException, ClassNotFoundException {
+        User user = new User();
+        String name = "lh99j";
+        String password = "1111";
+
+        user.setName(name);
+        user.setPassword(password);
+        userDao.insert(user);
+        userDao.update(user);
+
+        userDao.delete(user.getId());
+
+        User deletedUser = userDao.findById(user.getId());
+
+        assertThat(deletedUser, IsNull.nullValue());
+
+    }
 //    @Test
 //    public void getForHalla() throws SQLException, ClassNotFoundException {
 //        ConnectionMaker connectionMaker = new HallaConnectionMaker();
