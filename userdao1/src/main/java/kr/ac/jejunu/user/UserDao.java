@@ -38,7 +38,7 @@ public class UserDao {
         String sql = "insert into userinfo (name, password) values (?, ?)";
         Object[] params = new Object[]{user.getName(), user.getPassword()};
 
-        jdbcContext.insert(user, sql, params, this);
+        jdbcContext.insert(user, sql, params);
     }
 
     public void update(User user) throws SQLException {
@@ -59,6 +59,3 @@ public class UserDao {
         jdbcContext.update(sql, params);
     }
 }
-
-//변하는것과 변하지 않는것을 감지하고 변화는 것을 Extract Method를 했는데 막상보니 얘는 또 다른걸로 바뀔수가있어
-// 그래서 한단계 높은 class 레벨로 추상화 => * 인터페이스 *

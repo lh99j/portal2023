@@ -127,7 +127,7 @@ public class JdbcContext {
         jdbcContextForUpdate(statementStrategy);
     }
 
-    void insert(User user, String sql, Object[] params, UserDao userDao) throws SQLException {
+    void insert(User user, String sql, Object[] params) throws SQLException {
         StatementStrategy statementStrategy = connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
