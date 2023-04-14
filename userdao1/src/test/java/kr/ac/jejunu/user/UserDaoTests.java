@@ -42,7 +42,7 @@ public class UserDaoTests {
         String password = "1111";
         user.setName(name);
         user.setPassword(password);
-        
+
         userDao.insert(user);
         assertThat(user.getId(), greaterThan(1L));
 
