@@ -11,10 +11,6 @@ public class UpdateStatementStrategy implements StatementStrategy {
         this.user = user;
     }
 
-    //근데 update를 만들고 보니까 update는 delete와는 다른 파라미터가 존재함
-    //그래서 파라미터를 Object 타입으로 바꾸자!
-    //근데 일일이 바꾸면 어려우니까 Refactoring
-
     @Override
     public PreparedStatement makeStatement(Connection connection) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement

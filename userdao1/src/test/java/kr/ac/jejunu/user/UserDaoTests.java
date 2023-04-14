@@ -25,16 +25,6 @@ public class UserDaoTests {
 
     @Test
     public void get() throws SQLException, ClassNotFoundException {
-        // UserDao코드에서 getConnection을 사용하는 녀석 -> 즉 얘에게 의존성을 던짐
-//        ConnectionMaker connectionMaker = new JeJuConnectionMaker();
-//        UserDao userDao = new UserDao(connectionMaker);
-//        DaoFactory daoFactory = new DaoFactory();
-//        UserDao userDao = daoFactory.userDao();
-
-        //Spring
-//        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(DaoFactory.class);
-//        UserDao userDao = applicationContext.getBean("userDao", UserDao.class); //Dependency LookUp(new 키워드 X)
-
         Long id = 1L;
         String name = "lhj";
         String password = "1234";
@@ -52,13 +42,7 @@ public class UserDaoTests {
         String password = "1111";
         user.setName(name);
         user.setPassword(password);
-//        ConnectionMaker connectionMaker = new JeJuConnectionMaker();
-//        UserDao userDao = new UserDao(connectionMaker);
-
-        // UserDao가 던진 의존성을 테스트가 받았지만 테스트도 의존성을 DaoFactory에게 던짐.
-//        DaoFactory daoFactory = new DaoFactory();
-//        UserDao userDao = daoFactory.userDao();
-
+        
         userDao.insert(user);
         assertThat(user.getId(), greaterThan(1L));
 

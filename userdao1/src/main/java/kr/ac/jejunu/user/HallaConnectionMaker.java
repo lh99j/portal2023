@@ -7,11 +7,8 @@ import java.sql.SQLException;
 public class HallaConnectionMaker implements ConnectionMaker {
     @Override
     public Connection getConnection() throws ClassNotFoundException, SQLException {
-        // 데이터 어딨어? mysql
-        // mysql 클래스 로딩
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        // Connection 맺고
         return DriverManager.getConnection
                 ("jdbc:mysql://localhost/Halla", "root", "Flrnl3570@");
     }
