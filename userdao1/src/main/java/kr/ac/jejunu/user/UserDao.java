@@ -1,7 +1,6 @@
 package kr.ac.jejunu.user;
 
 
-import javax.sql.DataSource;
 import java.sql.*;
 
 public class UserDao {
@@ -26,62 +25,39 @@ public class UserDao {
 //            }
 //        };
 
+        String sql = "select id, name, password from userinfo where id = ?";
+        Object[] params = new Object[]{id};
+
         //람다식 사용
-        StatementStrategy statementStrategy = connection -> {
-            PreparedStatement preparedStatement = connection.prepareStatement
-                    ("select id, name, password from userinfo where id = ?");
-            preparedStatement.setLong(1, id);
-
-            return preparedStatement;
-        };
-
-        return jdbcContext.jdbcContextForFind(statementStrategy);
+        return jdbcContext.find(sql, params);
     }
 
     public void insert(User user) throws SQLException {
 //        StatementStrategy statementStrategy = new InsertStatementStrategy(user);
 //        jdbcContext.jdbcContextForInsert(user, statementStrategy);
+        String sql = "insert into userinfo (name, password) values (?, ?)";
+        Object[] params = new Object[]{user.getName(), user.getPassword()};
 
-        StatementStrategy statementStrategy = connection -> {
-            PreparedStatement preparedStatement = connection.prepareStatement
-                    ("insert into userinfo (name, password) values (?, ?)", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getPassword());
-
-            return preparedStatement;
-        };
-
-        jdbcContext.jdbcContextForInsert(user, statementStrategy);
+        jdbcContext.insert(user, sql, params, this);
     }
 
     public void update(User user) throws SQLException {
 //        StatementStrategy statementStrategy = new UpdateStatementStrategy(user);
 //        jdbcContext.jdbcContextForUpdate(statementStrategy);
+        String sql = "update userinfo set name = ?, password = ? where id = ?";
+        Object[] params = new Object[]{user.getName(), user.getPassword(), user.getId()};
 
-        StatementStrategy statementStrategy = connection -> {
-            PreparedStatement preparedStatement = connection.prepareStatement
-                    ("update userinfo set name = ?, password = ? where id = ?");
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setLong(3, user.getId());
-            return preparedStatement;
-        };
-
-        jdbcContext.jdbcContextForUpdate(statementStrategy);
+        jdbcContext.update(sql, params);
     }
 
     public void delete(Long id) throws SQLException {
 //        StatementStrategy statementStrategy = new DeleteStatementStrategy(id);
 //        jdbcContext.jdbcContextForUpdate(statementStrategy);
+        String sql = "delete from userinfo where id = ?";
+        Object[] params = new Object[]{id};
 
-        StatementStrategy statementStrategy = connection -> {
-            PreparedStatement preparedStatement = connection.prepareStatement("delete from userinfo where id = ?");
-            preparedStatement.setLong(1, id);
-            return preparedStatement;
-        };
-        jdbcContext.jdbcContextForUpdate(statementStrategy);
+        jdbcContext.update(sql, params);
     }
-
 }
 
 //변하는것과 변하지 않는것을 감지하고 변화는 것을 Extract Method를 했는데 막상보니 얘는 또 다른걸로 바뀔수가있어
