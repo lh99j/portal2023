@@ -37,11 +37,9 @@ public class UserDaoTests {
 
     @Test
     public void insert() throws SQLException, ClassNotFoundException {
-        User user = new User();
         String name = "lh99j";
         String password = "1111";
-        user.setName(name);
-        user.setPassword(password);
+        User user = User.builder().name(name).password(password).build();
 
         userDao.insert(user);
         assertThat(user.getId(), greaterThan(1L));

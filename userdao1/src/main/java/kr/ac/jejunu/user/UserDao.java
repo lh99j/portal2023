@@ -1,14 +1,13 @@
 package kr.ac.jejunu.user;
 
 
+import lombok.RequiredArgsConstructor;
+
 import java.sql.*;
 
+@RequiredArgsConstructor
 public class UserDao {
     private final JdbcContext jdbcContext;
-
-    public UserDao(JdbcContext jdbcContext) {
-        this.jdbcContext = jdbcContext;
-    }
 
     public User findById(Long id) throws SQLException {
         //변하지 않는 것은 Object가 늘어나지 않지만 변하는 녀석은 Object가 늘어남
