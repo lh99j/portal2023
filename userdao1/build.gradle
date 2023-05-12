@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'war'
 }
 
 group 'org.example'
@@ -10,7 +11,7 @@ repositories {
 }
 
 ext {
-    springVersion = '5.3.1'
+    springVersion = '6.0.7'
 }
 
 dependencies {
@@ -22,12 +23,15 @@ dependencies {
     implementation "org.springframework:spring-core:${springVersion}"
     implementation "org.springframework:spring-context:${springVersion}"
     implementation "org.springframework:spring-jdbc:${springVersion}"
+    implementation "org.springframework:spring-webmvc:${springVersion}"
 
     //lombok
     compileOnly 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
     testCompileOnly 'org.projectlombok:lombok:1.18.26'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 }
 
 test {
